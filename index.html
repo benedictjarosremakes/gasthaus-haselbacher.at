@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gasthaus Haselbacher</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Colors */
+            --color-bg: #F9F8F6;
+            --color-surface: #EFECE7;
+            --color-text: #2C3531;
+            --color-text-muted: #5E6B64;
+            --color-accent: #3A5A40;
+            --color-highlight: #D4A373;
+            --color-dark: #1f2623;
+            
+            /* Typography */
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Inter', sans-serif;
+            
+            --text-xs: clamp(0.75rem, 1.5vw, 0.875rem);
+            --text-sm: clamp(0.875rem, 1.8vw, 1rem);
+            --text-base: clamp(1rem, 2vw, 1.125rem);
+            --text-lg: clamp(1.125rem, 2.5vw, 1.375rem);
+            --text-xl: clamp(1.375rem, 3vw, 1.75rem);
+            --text-2xl: clamp(1.75rem, 4vw, 2.5rem);
+            --text-3xl: clamp(2.25rem, 5vw, 3.5rem);
+            --text-4xl: clamp(3rem, 7vw, 4.5rem);
+            
+            /* Spacing */
+            --space-1: 0.25rem;
+            --space-2: 0.5rem;
+            --space-3: 0.75rem;
+            --space-4: 1rem;
+            --space-6: 1.5rem;
+            --space-8: 2rem;
+            --space-12: 3rem;
+            --space-16: 4rem;
+            --space-24: 6rem;
+            --section-padding: clamp(4rem, 10vw, 8rem);
+            
+            /* Z-Index Stack */
+            --z-base: 0;
+            --z-raised: 10;
+            --z-dropdown: 100;
+            --z-sticky: 200;
+            --z-overlay: 500;
+            --z-modal: 1000;
+            --z-toast: 2000;
+            --z-max: 9000;
+        }
+
+        /* Reset & Base */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 100%;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        button {
+            font-family: inherit;
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 {
+            font-family: var(--font-heading);
+            font-weight: 400;
+            line-height: 1.2;
+            color: var(--color-text);
+        }
+
+        h1 { font-size: var(--text-4xl); }
+        h2 { font-size: var(--text-3xl); margin-bottom: var(--space-6); }
+        h3 { font-size: var(--text-2xl); margin-bottom: var(--space-4); }
+        
+        p { margin-bottom: var(--space-4); }
+        p:last-child { margin-bottom: 0; }
+
+        .text-muted { color: var(--color-text-muted); }
+        .text-center { text-align: center; }
+
+        /* Icons */
+        [data-lucide] {
+            display: inline-block;
+            vertical-align: middle;
+            flex-shrink: 0;
+            line-height: 1;
+            pointer-events: none;
+            width: 1.2em;
+            height: 1.2em;
+        }
+
+        .icon-text {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45em;
+        }
+
+        /* Layout Utilities */
+        .container {
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 var(--space-6);
+        }
+
+        .section {
+            padding: var(--section-padding) 0;
+        }
+
+        .surface-bg {
+            background-color: var(--color-surface);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            font-size: var(--text-base);
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: var(--z-raised);
+        }
+
+        .btn-primary {
+            background-color: var(--color-accent);
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--color-dark);
+        }
+
+        .btn-outline {
+            border: 1px solid var(--color-text);
+            color: var(--color-text);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--color-text);
+            color: var(--color-bg);
+        }
+
+        /* Skip Link */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--color-accent);
+            color: white;
+            padding: 8px;
+            z-index: var(--z-max);
+            transition: top 0.2s;
+        }
+        .skip-link:focus { top: 0; }
+
+        /* Header & Navigation */
+        .site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1001; /* CRITICAL */
+            padding: var(--space-4) 0;
+            transition: background-color 0.3s ease, padding 0.3s ease;
+        }
+
+        .site-header.scrolled {
+            background-color: rgba(249, 248, 246, 0.95);
+            backdrop-filter: blur(10px);
+            padding: var(--space-3) 0;
+            box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+        }
+
+        .site-header.scrolled .logo {
+            color: var(--color-text);
+        }
+
+        .site-header.scrolled .nav-links a {
+            color: var(--color-text);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-heading);
+            font-size: var(--text-xl);
+            font-weight: 600;
+            color: #ffffff;
+            letter-spacing: 0.02em;
+            position: relative;
+            z-index: var(--z-raised);
+            transition: color 0.3s ease;
+        }
+
+        .nav-links {
+            display: none;
+            gap: var(--space-8);
+        }
+
+        .nav-links a {
+            font-size: var(--text-sm);
+            font-weight: 500;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--color-highlight);
+        }
+
+        /* Mobile Navigation */
+        .nav-toggle {
+            display: block;
+            position: absolute;
+            right: 1.25rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1002; /* CRITICAL */
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            width: 44px;
+            height: 44px;
+        }
+
+        .hamburger {
+            display: block;
+            position: relative;
+        }
+
+        .hamburger, .hamburger::before, .hamburger::after {
+            width: 24px;
+            height: 2px;
+            background-color: #ffffff;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .site-header.scrolled .hamburger,
+        .site-header.scrolled .hamburger::before,
+        .site-header.scrolled .hamburger::after {
+            background-color: var(--color-text);
+        }
+
+        .hamburger::before, .hamburger::after {
+            content: '';
+            position: absolute;
+            left: 0;
+        }
+
+        .hamburger::before { top: -6px; }
+        .hamburger::after { bottom: -6px; }
+
+        .nav-open .hamburger { background-color: transparent !important; }
+        .nav-open .hamburger::before {
+            top: 0;
+            transform: rotate(45deg);
+            background-color: var(--color-text) !important;
+        }
+        .nav-open .hamburger::after {
+            bottom: 0;
+            transform: rotate(-45deg);
+            background-color: var(--color-text) !important;
+        }
+        .nav-open .logo { color: var(--color-text); }
+
+        .mobile-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1000; /* CRITICAL */
+            background: var(--color-bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .nav-open .mobile-overlay {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-nav-links {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--space-6);
+        }
+
+        .mobile-nav-links a {
+            font-family: var(--font-heading);
+            font-size: var(--text-2xl);
+            color: var(--color-text);
+            padding: 1rem 0;
+        }
+
+        @media (min-width: 769px) {
+            .nav-toggle { display: none; pointer-events: none; }
+            .nav-links { display: flex; }
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: var(--space-24) var(--space-6) var(--space-12);
+            color: #ffffff;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+
+        .hero-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(44, 53, 49, 0.45); /* Warm dark overlay */
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            color: #ffffff;
+            margin-bottom: var(--space-6);
+            letter-spacing: -0.01em;
+        }
+
+        .hero p {
+            font-size: var(--text-lg);
+            margin-bottom: var(--space-8);
+            font-weight: 400;
+            max-width: 600px;
+            margin-inline: auto;
+        }
+
+        /* Intro Section */
+        .intro-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-12);
+            align-items: center;
+        }
+
+        .intro-text {
+            max-width: 600px;
+        }
+
+        .intro-image-wrap {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: var(--space-8);
+            background: var(--color-surface);
+        }
+
+        @media (min-width: 768px) {
+            .intro-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        /* Rooms Section */
+        .rooms-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-8);
+            margin-top: var(--space-12);
+        }
+
+        .room-card {
+            background: #ffffff;
+            transition: transform 0.3s ease;
+        }
+
+        .room-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .room-img-wrap {
+            height: 320px;
+            overflow: hidden;
+        }
+
+        .room-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .room-card:hover .room-img-wrap img {
+            transform: scale(1.05);
+        }
+
+        .room-content {
+            padding: var(--space-6);
+        }
+
+        .room-content h3 {
+            font-size: var(--text-xl);
+            margin-bottom: var(--space-2);
+        }
+
+        @media (min-width: 768px) {
+            .rooms-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        /* Split Feature (Butcher & Kitchen) */
+        .split-feature {
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+
+        .split-content {
+            padding: var(--section-padding) var(--space-6);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .split-image {
+            height: 50vh;
+            min-height: 400px;
+            position: relative;
+        }
+
+        .split-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .split-image.css-bg {
+            background-color: var(--color-accent);
+            background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.1) 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+
+        @media (min-width: 1024px) {
+            .split-feature { grid-template-columns: 1fr 1fr; }
+            .split-image { height: auto; min-height: 600px; }
+            
+            /* Alternate layout */
+            .split-feature:nth-child(even) .split-content {
+                grid-column: 2;
+                grid-row: 1;
+                padding-left: var(--space-16);
+            }
+            .split-feature:nth-child(even) .split-image {
+                grid-column: 1;
+                grid-row: 1;
+            }
+            .split-feature:nth-child(odd) .split-content {
+                padding-right: var(--space-16);
+            }
+        }
+
+        /* Menu Section */
+        .menu-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-8) var(--space-12);
+            margin-top: var(--space-12);
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: baseline;
+            gap: var(--space-2);
+            margin-bottom: var(--space-3);
+        }
+
+        .menu-name {
+            font-weight: 500;
+            color: var(--color-text);
+        }
+
+        .menu-dots {
+            flex-grow: 1;
+            border-bottom: 2px dotted var(--color-text-muted);
+            opacity: 0.4;
+            position: relative;
+            top: -4px;
+        }
+
+        .menu-price {
+            font-weight: 600;
+            color: var(--color-text);
+            white-space: nowrap;
+        }
+
+        @media (min-width: 768px) {
+            .menu-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        /* Footer */
+        .site-footer {
+            background-color: var(--color-dark);
+            color: #ffffff;
+            padding: clamp(4rem, 8vw, 7rem) 0 2rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-12);
+            margin-bottom: var(--space-12);
+        }
+
+        .footer-brand h2 {
+            color: #ffffff;
+            font-size: var(--text-2xl);
+            margin-bottom: var(--space-2);
+        }
+
+        .footer-brand p {
+            color: rgba(255,255,255,0.7);
+            max-width: 300px;
+            margin-bottom: var(--space-6);
+        }
+
+        .social-links {
+            display: flex;
+            gap: var(--space-4);
+        }
+
+        .social-links a {
+            color: #ffffff;
+            opacity: 0.8;
+        }
+
+        .social-links a:hover {
+            opacity: 1;
+            color: var(--color-highlight);
+        }
+
+        .footer-col h4 {
+            color: #ffffff;
+            font-family: var(--font-body);
+            font-size: var(--text-sm);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: var(--space-6);
+        }
+
+        .footer-col ul {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-3);
+        }
+
+        .footer-col a, .footer-col button {
+            color: rgba(255,255,255,0.7);
+            font-size: var(--text-base);
+            text-align: left;
+        }
+
+        .footer-col a:hover, .footer-col button:hover {
+            color: #ffffff;
+        }
+        
+        .footer-contact-item {
+            color: rgba(255,255,255,0.7);
+            margin-bottom: var(--space-3);
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-3);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: var(--space-6);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-4);
+            text-align: center;
+            color: rgba(255,255,255,0.5);
+            font-size: var(--text-sm);
+        }
+
+        @media (min-width: 768px) {
+            .footer-grid { grid-template-columns: 2fr 1fr 1fr; }
+            .footer-bottom {
+                flex-direction: row;
+                justify-content: space-between;
+                text-align: left;
+            }
+        }
+
+        /* Scroll Reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(22px);
+            transition: opacity 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .reveal { opacity: 1; transform: none; transition: none; }
+        }
+
+        /* Modals */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: var(--z-modal);
+            background: rgba(31, 38, 35, 0.8);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-4);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 480px;
+            padding: var(--space-8);
+            border-radius: 4px;
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: var(--space-4);
+            right: var(--space-4);
+            color: var(--color-text-muted);
+            padding: 0.5rem;
+        }
+
+        .modal-close:hover {
+            color: var(--color-text);
+        }
+
+        .modal-title {
+            font-size: var(--text-2xl);
+            margin-bottom: var(--space-4);
+            padding-right: var(--space-8);
+        }
+
+        .modal-body {
+            color: var(--color-text-muted);
+            margin-bottom: var(--space-6);
+        }
+
+        .modal-body a {
+            color: var(--color-accent);
+            font-weight: 500;
+            text-decoration: underline;
+        }
+
+        /* Cookie Banner */
+        .cookie-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            padding: var(--space-6);
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+            z-index: var(--z-toast);
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-4);
+        }
+
+        .cookie-banner.active {
+            transform: translateY(0);
+        }
+
+        .cookie-content p {
+            font-size: var(--text-sm);
+            color: var(--color-text-muted);
+            margin: 0;
+        }
+
+        .cookie-actions {
+            display: flex;
+            gap: var(--space-4);
+        }
+
+        @media (min-width: 768px) {
+            .cookie-banner {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                padding: var(--space-4) var(--space-8);
+            }
+            .cookie-content { max-width: 600px; }
+        }
+    </style>
+</head>
+<body>
+<!-- DEMO NOTICE BANNER - benedictjaros.com -->
+<style>
+#__demo_spacer{display:block;}
+#__demo_notice,#__demo_notice *{box-sizing:border-box;margin:0;padding:0;}
+#__demo_notice{
+  position:fixed;top:0;left:0;right:0;z-index:99999;
+  background:rgba(9,9,11,.97);
+  backdrop-filter:blur(14px) saturate(160%);
+  -webkit-backdrop-filter:blur(14px) saturate(160%);
+  border-bottom:1px solid rgba(255,255,255,.07);
+  font-family:system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;
+}
+#__demo_inner{
+  max-width:1280px;margin:0 auto;
+  padding:0 44px 0 18px;min-height:38px;
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+}
+#__demo_dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;background:#f5c842;box-shadow:0 0 7px rgba(245,200,66,.55);}
+#__demo_label{color:#f5c842;font-weight:700;font-size:10px;letter-spacing:.12em;text-transform:uppercase;flex-shrink:0;}
+#__demo_divider{color:rgba(255,255,255,.15);font-size:12px;flex-shrink:0;}
+#__demo_text{color:rgba(255,255,255,.45);font-size:11.5px;line-height:1.45;flex:1 1 160px;}
+#__demo_links{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+#__demo_links a{
+  color:rgba(255,255,255,.38);font-size:11px;text-decoration:none;
+  border-bottom:1px solid rgba(255,255,255,.14);
+  transition:color .15s,border-color .15s;white-space:nowrap;
+}
+#__demo_links a:hover{color:rgba(255,255,255,.75);border-color:rgba(255,255,255,.4);}
+#__demo_link_sep{color:rgba(255,255,255,.15);font-size:10px;}
+#__demo_close{
+  position:absolute;right:0;top:0;bottom:0;width:40px;
+  background:none;border:none;cursor:pointer;
+  color:rgba(255,255,255,.28);font-size:16px;line-height:1;
+  display:flex;align-items:center;justify-content:center;
+  transition:color .15s;
+}
+#__demo_close:hover{color:rgba(255,255,255,.7);}
+@media(max-width:560px){
+  #__demo_inner{padding:7px 44px 7px 14px;gap:6px;}
+  #__demo_text{font-size:11px;flex:1 1 100%;order:3;}
+  #__demo_dot,#__demo_label{order:1;}
+  #__demo_divider{order:2;}
+  #__demo_links{order:4;}
+}
+</style>
+<div id="__demo_spacer"></div>
+<div id="__demo_notice" role="banner" aria-label="Demo notice">
+  <div id="__demo_inner">
+    <span id="__demo_dot"></span>
+    <span id="__demo_label">Demo</span>
+    <span id="__demo_divider">/</span>
+    <span id="__demo_text">Unofficial remake &mdash; not the real website. All content &amp; trademarks belong to their owners.</span>
+    <div id="__demo_links">
+      <a href="https://benedictjaros.com/impressum" target="_blank" rel="noopener noreferrer">Impressum</a>
+      <span id="__demo_link_sep">&middot;</span>
+      <a href="https://benedictjaros.com/datenschutz" target="_blank" rel="noopener noreferrer">Datenschutz</a>
+    </div>
+  </div>
+  <button id="__demo_close" aria-label="Close demo notice">&#x2715;</button>
+</div>
+<script>
+(function () {
+  var spacer = document.getElementById('__demo_spacer');
+  var b = document.getElementById('__demo_notice');
+  var x = document.getElementById('__demo_close');
+  if (!b || !spacer) return;
+  function sync() { spacer.style.height = b.offsetHeight + 'px'; }
+  function hide() {
+    b.style.display = 'none'; spacer.style.height = '0';
+    try { sessionStorage.setItem('__demo_closed', '1'); } catch (e) {}
+  }
+  try { if (sessionStorage.getItem('__demo_closed')) { b.style.display = 'none'; spacer.style.height = '0'; return; } } catch (e) {}
+  sync();
+  window.addEventListener('resize', function () { if (b.style.display !== 'none') sync(); });
+  if (x) x.addEventListener('click', hide);
+}());
+</script>
+
+
+    <a href="#main" class="skip-link">Zum Inhalt springen</a>
+
+    <!-- Header -->
+    <header class="site-header" id="header">
+        <div class="container nav-container">
+            <a href="#" class="logo">Haselbacher</a>
+            
+            <nav class="nav-links">
+                <a href="#intro">Familienbetrieb</a>
+                <a href="#rooms">Räumlichkeiten</a>
+                <a href="#features">Handwerk</a>
+                <a href="#menu">Speisekarte</a>
+            </nav>
+
+            <button class="nav-toggle" aria-expanded="false" aria-label="Menü öffnen" id="navToggle">
+                <span class="hamburger"></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Overlay -->
+    <div class="mobile-overlay" id="mobileOverlay">
+        <nav class="mobile-nav-links">
+            <a href="#intro" class="mobile-link">Familienbetrieb</a>
+            <a href="#rooms" class="mobile-link">Räumlichkeiten</a>
+            <a href="#features" class="mobile-link">Handwerk</a>
+            <a href="#menu" class="mobile-link">Speisekarte</a>
+            <button class="btn btn-primary trigger-reservation" style="margin-top: 1rem;">Tisch reservieren</button>
+        </nav>
+    </div>
+
+    <main id="main">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-bg">
+                <img src="https://www.gasthaus-haselbacher.at/wp-content/uploads/go-x/u/af97e441-6839-48df-960b-a1ea0b1a874a/l0,t517,w2000,h940/image-1366x642.jpg" alt="Atmosphärisches Bild des Gasthauses" fetchpriority="high">
+            </div>
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <h1>Gasthaus & Fleischerei Haselbacher</h1>
+                <p>Reservieren Sie einen Tisch für einen unvergesslichen Aufenthalt</p>
+                <button class="btn btn-primary trigger-reservation">
+                    Tisch reservieren <i data-lucide="arrow-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Intro Section -->
+        <section id="intro" class="section">
+            <div class="container intro-grid">
+                <div class="intro-text reveal">
+                    <h2>Unser Familienbetrieb</h2>
+                    <p>Unsere langjährige Tradition, die sich über mehr als 50 Jahre erstreckt, ist das Fundament unseres Hauses. Wir legen größten Wert auf Authentizität, regionale Verbundenheit und herzliche Gastfreundschaft.</p>
+                    <p class="text-muted">Jedes Detail in unserem Haus erzählt eine Geschichte von Handwerk und Leidenschaft für gute Lebensmittel. Wir laden Sie ein, Teil dieser Geschichte zu werden.</p>
+                </div>
+                <div class="intro-image-wrap reveal" style="--i:1">
+                    <img src="https://www.gasthaus-haselbacher.at/wp-content/uploads/go-x/u/4c2593fe-25cb-4ec3-abda-409594962874/image-455x114.png" alt="Haselbacher Gebäude Illustration" loading="lazy">
+                </div>
+            </div>
+        </section>
+
+        <!-- Rooms Section -->
+        <section id="rooms" class="section surface-bg">
+            <div class="container">
+                <div class="text-center reveal">
+                    <h2>Unsere Räumlichkeiten</h2>
+                    <p class="text-muted" style="max-width: 600px; margin: 0 auto;">Ob für ein gemütliches Abendessen zu zweit oder eine große Feier – wir bieten den passenden Rahmen.</p>
+                </div>
+
+                <div class="rooms-grid">
+                    <article class="room-card reveal" style="--i:0">
+                        <div class="room-img-wrap">
+                            <img src="https://www.gasthaus-haselbacher.at/wp-content/uploads/go-x/u/72f03fff-b009-4a0e-8acf-7f079de32807/l629,t0,w1125,h1500/image-768x1024.jpg" alt="Vitusstüberl" loading="lazy">
+                        </div>
+                        <div class="room-content">
+                            <h3>Vitusstüberl</h3>
+                            <p class="text-muted">Ein intimer, holzgetäfelter Raum, der durch seine warme Atmosphäre besticht. Ideal für kleinere Gesellschaften und ungestörte Gespräche.</p>
+                        </div>
+                    </article>
+
+                    <article class="room-card reveal" style="--i:1">
+                        <div class="room-img-wrap">
+                            <img src="https://www.gasthaus-haselbacher.at/wp-content/uploads/go-x/u/7dbaeadd-1bf1-4c37-bedd-ec42a7c9ab48/l274,t0,w1128,h1500/image-768x1021.jpg" alt="Otto Schenk Saal" loading="lazy">
+                        </div>
+                        <div class="room-content">
+                            <h3>Otto Schenk Saal</h3>
+                            <p class="text-muted">Unser großzügiger Festsaal bietet ausreichend Platz für Hochzeiten, Firmenfeiern und Jubiläen in einem eleganten Ambiente.</p>
+                        </div>
+                    </article>
+
+                    <article class="room-card reveal" style="--i:2">
+                        <div class="room-img-wrap">
+                            <img src="https://www.gasthaus-haselbacher.at/wp-content/uploads/go-x/u/404f6efe-cf93-4ed8-a176-a67d0e41d6b9/l643,t0,w1125,h1500/image-768x1024.jpg" alt="Traditionelle Gaststube" loading="lazy">
+                        </div>
+                        <div class="room-content">
+                            <h3>Traditionelle Gaststube</h3>
+                            <p class="text-muted">Das Herzstück unseres Hauses. Hier trifft man sich auf ein Glas Wein, genießt deftige Hausmannskost und lässt den Alltag hinter sich.</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Split Features (Butcher & Kitchen) -->
+        <section id="features">
+            <!-- Butcher -->
+            <div class="split-feature surface-bg">
+                <div class="split-content reveal">
+                    <h2>Fleisch und Wurstwaren aus eigener Erzeugung</h2>
+                    <p>Entdecken Sie die Vielfalt unserer hauseigenen Fleischerei! Wir beziehen unsere Tiere ausschließlich von Bauern aus der direkten Umgebung, die wir persönlich kennen.</p>
+                    <p class="text-muted">Durch die traditionelle Verarbeitung im eigenen Haus garantieren wir höchste Qualität und Frische. Von herzhaften Würsten bis zu feinen Schinkenspezialitäten – bei uns schmecken Sie das Handwerk.</p>
+                </div>
+                <div class="split-image css-bg reveal">
+                    <!-- Tasteful CSS background as requested when no specific image is provided -->
+                </div>
+            </div>
+
+            <!-- Kitchen -->
+            <div class="split-feature">
+                <div class="split-content reveal">
+                    <h2>Unsere Küche</h2>
+                    <p>Ein besonderes Highlight unseres Hauses ist unsere angeschlossene Fleischerei. Diese einzigartige Kombination ermöglicht es uns, Fleisch von höchster Qualität direkt in unserer Küche zu verarbeiten.</p>
+                    <p class="text-muted">Unsere Küchenlinie ist geprägt von traditionellen österreichischen Rezepten, die wir mit einem modernen Touch und viel Liebe zum Detail auf den Teller bringen.</p>
+                </div>
+                <div class="split-image reveal">
+                    <img src="https://www.gasthaus-haselbacher.at/wp-content/uploads/go-x/u/ad065cbe-d281-4c7d-ba13-045a27d7cd52/l247,t337,w1040,h1386/image-768x1024.jpg" alt="Koch in der Küche" loading="lazy">
+                </div>
+            </div>
+        </section>
+
+        <!-- Menu Section -->
+        <section id="menu" class="section">
+            <div class="container menu-container">
+                <div class="text-center reveal">
+                    <h2>Speisekarte</h2>
+                    <p class="text-muted">Ein Auszug aus unseren klassischen Suppen</p>
+                </div>
+
+                <div class="menu-grid reveal" style="--i:1">
+                    <div class="menu-item">
+                        <span class="menu-name">Leberknödelsuppe</span>
+                        <span class="menu-dots"></span>
+                        <span class="menu-price">€ 4.50</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="menu-name">Schinkelschöberlsuppe</span>
+                        <span class="menu-dots"></span>
+                        <span class="menu-price">€ 4.50</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="menu-name">Frittatensuppe</span>
+                        <span class="menu-dots"></span>
+                        <span class="menu-price">€ 4.50</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="menu-name">Nudelsuppe</span>
+                        <span class="menu-dots"></span>
+                        <span class="menu-price">€ 4.00</span>
+                    </div>
+                    <div class="menu-item">
+                        <span class="menu-name">Kartoffelcremesuppe mit Steinpilzen</span>
+                        <span class="menu-dots"></span>
+                        <span class="menu-price">€ 4.80</span>
+                    </div>
+                </div>
+                
+                <div class="text-center reveal" style="margin-top: var(--space-12);">
+                    <button class="btn btn-outline trigger-reservation">Tisch reservieren</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h2>Haselbacher</h2>
+                    <p>Gasthaus & Fleischerei. Tradition und Handwerk seit über 50 Jahren.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i data-lucide="facebook"></i></a>
+                        <a href="#" aria-label="Instagram"><i data-lucide="instagram"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Kontakt</h4>
+                    <div class="footer-contact-item">
+                        <i data-lucide="map-pin"></i>
+                        <span>Hauptstraße 55<br>2641 Schottwien</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i data-lucide="phone"></i>
+                        <span>+43 2663 8215</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i data-lucide="mail"></i>
+                        <span>info@gasthaus-haselbacher.at</span>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Rechtliches</h4>
+                    <ul>
+                        <li><button class="trigger-legal">Impressum</button></li>
+                        <li><button class="trigger-legal">Datenschutz</button></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2026 Haselbacher — All original content, images & trademarks are property of their respective owners. Website rebuilt by Benedict Jaros.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Reservation Modal -->
+    <div class="modal-overlay" id="reservationModal" role="dialog" aria-modal="true" aria-labelledby="resModalTitle">
+        <div class="modal-card">
+            <button class="modal-close" aria-label="Schließen" data-close="reservationModal">
+                <i data-lucide="x"></i>
+            </button>
+            <h2 id="resModalTitle" class="modal-title">Tisch reservieren</h2>
+            <p class="modal-body">Reservierungen sind bei uns nur telefonisch möglich. Rufen Sie uns an:<br><br>
+            <a href="tel:+4326638215" class="icon-text"><i data-lucide="phone"></i> +43 2663 8215</a></p>
+            <button class="btn btn-primary" data-close="reservationModal" style="width: 100%;">Schließen</button>
+        </div>
+    </div>
+
+    <!-- Legal Demo Notice Modal -->
+    <div class="modal-overlay" id="legalModal" role="dialog" aria-modal="true" aria-labelledby="legalModalTitle">
+        <div class="modal-card">
+            <button class="modal-close" aria-label="Schließen" data-close="legalModal">
+                <i data-lucide="x"></i>
+            </button>
+            <h2 id="legalModalTitle" class="modal-title">Rechtliche Hinweise</h2>
+            <p class="modal-body">Diese Website ist ein Demo-Remake und wurde nicht von oder für das Unternehmen erstellt. Die Inhalte dienen ausschließlich Demonstrationszwecken. Für unsere eigenen rechtlichen Informationen:</p>
+            <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem;">
+                <a href="https://benedictjaros.com/impressum" target="_blank">Impressum</a>
+                <a href="https://benedictjaros.com/datenschutz" target="_blank">Datenschutz</a>
+            </div>
+            <button class="btn btn-primary" data-close="legalModal" style="width: 100%;">Verstanden</button>
+        </div>
+    </div>
+
+    <!-- Cookie Banner -->
+    <div class="cookie-banner" id="cookieBanner">
+        <div class="cookie-content">
+            <p>Wir verwenden Cookies, um Ihre Erfahrung auf unserer Website zu verbessern. Durch die Nutzung unserer Website stimmen Sie der Verwendung von Cookies zu.</p>
+        </div>
+        <div class="cookie-actions">
+            <button class="btn btn-outline" id="cookieDecline" style="padding: 0.5rem 1rem; font-size: 0.875rem;">Ablehnen</button>
+            <button class="btn btn-primary" id="cookieAccept" style="padding: 0.5rem 1rem; font-size: 0.875rem;">Akzeptieren</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize Icons
+            lucide.createIcons();
+
+            // Sticky Header
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            }, { passive: true });
+
+            // Mobile Navigation
+            const navToggle = document.getElementById('navToggle');
+            const mobileOverlay = document.getElementById('mobileOverlay');
+            const mobileLinks = document.querySelectorAll('.mobile-link');
+            
+            function toggleMenu() {
+                const isExpanded = navToggle.getAttribute('aria-expanded') === 'true';
+                navToggle.setAttribute('aria-expanded', !isExpanded);
+                document.body.classList.toggle('nav-open');
+                
+                if (!isExpanded) {
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    document.body.style.overflow = '';
+                }
+            }
+
+            navToggle.addEventListener('click', toggleMenu);
+            
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (document.body.classList.contains('nav-open')) {
+                        toggleMenu();
+                    }
+                });
+            });
+
+            // Scroll Reveal
+            const revealElements = document.querySelectorAll('.reveal');
+            const revealOptions = {
+                threshold: 0.12,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, revealOptions);
+
+            revealElements.forEach(el => revealObserver.observe(el));
+
+            // Modals
+            function openModal(modalId) {
+                const modal = document.getElementById(modalId);
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeModal(modal) {
+                modal.classList.remove('active');
+                if (!document.body.classList.contains('nav-open')) {
+                    document.body.style.overflow = '';
+                }
+            }
+
+            // Reservation Triggers
+            document.querySelectorAll('.trigger-reservation').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (document.body.classList.contains('nav-open')) {
+                        toggleMenu(); // close mobile menu if open
+                    }
+                    openModal('reservationModal');
+                });
+            });
+
+            // Legal Triggers
+            document.querySelectorAll('.trigger-legal').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    openModal('legalModal');
+                });
+            });
+
+            // Close Modals
+            document.querySelectorAll('.modal-overlay').forEach(overlay => {
+                overlay.addEventListener('click', (e) => {
+                    if (e.target === overlay) {
+                        closeModal(overlay);
+                    }
+                });
+            });
+
+            document.querySelectorAll('[data-close]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const modalId = btn.getAttribute('data-close');
+                    closeModal(document.getElementById(modalId));
+                });
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    document.querySelectorAll('.modal-overlay.active').forEach(closeModal);
+                    if (document.body.classList.contains('nav-open')) {
+                        toggleMenu();
+                    }
+                }
+            });
+
+            // Cookie Banner
+            const cookieBanner = document.getElementById('cookieBanner');
+            const btnAccept = document.getElementById('cookieAccept');
+            const btnDecline = document.getElementById('cookieDecline');
+
+            if (!localStorage.getItem('cookie_consent')) {
+                // Small delay for better UX
+                setTimeout(() => {
+                    cookieBanner.classList.add('active');
+                }, 1000);
+            }
+
+            function handleCookieConsent(choice) {
+                localStorage.setItem('cookie_consent', choice);
+                cookieBanner.classList.remove('active');
+            }
+
+            btnAccept.addEventListener('click', () => handleCookieConsent('accepted'));
+            btnDecline.addEventListener('click', () => handleCookieConsent('declined'));
+        });
+    </script>
+</body>
+</html>
